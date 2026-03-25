@@ -1,0 +1,138 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  role      Role     @default(STAFF)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+model Product {
+  id         Int      @id @default(autoincrement())
+  name       String
+  sku        String   @unique
+  category   String?
+  description String?
+  cost_price  Float
+  sell_price  Float
+  stock_qty   Int      @default(0)
+  min_stock   Int      @default(0)
+  image       String?
+
+  purchaseItems PurchaseItem[]
+  saleItems     SaleItem[]
+  stockMovements StockMovement[]
+}
+
+model Supplier {
+  id      Int      @id @default(autoincrement())
+  name    String
+  phone   String?
+  email   String?
+  address String?
+  notes   String?
+
+  purchases Purchase[]
+}
+
+model Customer {
+  id            Int      @id @default(autoincrement())
+  name          String
+  phone         String?
+  email         String?
+  address       String?
+  vat_number    String?
+  tax_office    String?
+  notes         String?
+
+  sales Sales[]
+}
+
+model Purchase {
+  id            Int           @id @default(autoincrement())
+  supplier      Supplier      @relation(fields: [supplierId], references: [id])
+  supplierId    Int
+  date          DateTime
+  invoice_number String
+  total_amount  Float
+
+  items PurchaseItem[]
+}
+
+model PurchaseItem {
+  id          Int      @id @default(autoincrement())
+  purchase    Purchase @relation(fields: [purchaseId], references: [id])
+  purchaseId  Int
+  product     Product  @relation(fields: [productId], references: [id])
+  productId   Int
+  qty         Int
+  price       Float
+  subtotal    Float
+}
+
+model Sales {
+  id              Int        @id @default(autoincrement())
+  customer        Customer   @relation(fields: [customerId], references: [id])
+  customerId      Int
+  date            DateTime
+  invoice_number  String
+  payment_method  String
+  total_amount    Float
+  pdf_url         String?
+  delivery_note_pdf String?
+
+  items SaleItem[]
+}
+
+model SaleItem {
+  id        Int    @id @default(autoincrement())
+  sale      Sales  @relation(fields: [saleId], references: [id])
+  saleId    Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  qty       Int
+  price     Float
+  subtotal  Float
+}
+
+model StockMovement {
+  id         Int      @id @default(autoincrement())
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+  type       MovementType
+  qty        Int
+  date       DateTime @default(now())
+  reference_id Int?
+}
+
+enum MovementType {
+  PURCHASE
+  SALE
+  MANUAL_ADJUSTMENT
+}
+
+model CompanySettings {
+  id           Int    @id @default(autoincrement())
+  business_name String
+  address       String?
+  phone         String?
+  email         String?
+  vat_number    String?
+  tax_office    String?
+  logo          String?
+  invoice_notes String?
+}
