@@ -1,0 +1,73 @@
+warehouse-saas/
+  package.json
+  tsconfig.json
+  next.config.mjs
+  prisma/
+    schema.prisma
+    seed.ts
+  src/
+    lib/
+      db.ts
+      auth.ts
+      pdf.ts
+      permissions.ts
+      kpis.ts
+      csv.ts
+    app/
+      layout.tsx
+      page.tsx                 // Dashboard
+      api/
+        auth/
+          login/route.ts
+          me/route.ts
+        products/
+          route.ts             // GET, POST
+          [id]/route.ts        // GET, PUT, DELETE
+          import/route.ts      // POST CSV
+          export/route.ts      // GET CSV
+        suppliers/
+          route.ts
+          [id]/route.ts
+        customers/
+          route.ts
+          [id]/route.ts
+        purchases/
+          route.ts
+          [id]/route.ts
+        sales/
+          route.ts
+          [id]/route.ts
+          invoice/route.ts     // regenerate invoice PDF
+          delivery-note/route.ts
+        stock-movements/
+          route.ts
+        company-settings/
+          route.ts
+        dashboard/
+          kpis/route.ts
+      dashboard/
+        page.tsx
+      products/
+        page.tsx
+      purchases/
+        page.tsx
+      sales/
+        page.tsx
+      customers/
+        page.tsx
+      suppliers/
+        page.tsx
+      settings/
+        page.tsx
+    components/
+      Layout.tsx
+      DataTable.tsx
+      Charts.tsx
+      MapEmbed.tsx
+      Forms/
+        ProductForm.tsx
+        PurchaseForm.tsx
+        SaleForm.tsx
+        CustomerForm.tsx
+        SupplierForm.tsx
+        CompanySettingsForm.tsx
