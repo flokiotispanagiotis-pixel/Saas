@@ -317,7 +317,7 @@ UI:
 🛠️ Installation
 Code
 
-git clone https://github.com/yourname/warehouse-saas.git
+github.com/flokiotispanagiotis-pixel/Saas.git
 cd warehouse-saas
 npm install
 cp .env.example .env
